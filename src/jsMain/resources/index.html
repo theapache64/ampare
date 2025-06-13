@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📈 Ampare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .input-section {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+        }
+
+        .input-group textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.875rem;
+            resize: vertical;
+        }
+
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+
+        .compare-btn {
+            display: block;
+            margin: 0 auto;
+            background: #3182ce;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .compare-btn:hover {
+            background: #2c5aa0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #718096;
+        }
+
+        .stat-added .stat-number { color: #38a169; }
+        .stat-removed .stat-number { color: #e53e3e; }
+        .stat-modified .stat-number { color: #d69e2e; }
+        .stat-same .stat-number { color: #718096; }
+
+        .diff-section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .diff-header {
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .diff-header.added { background: #f0fff4; color: #38a169; border-bottom: 1px solid #c6f6d5; }
+        .diff-header.removed { background: #fffaf0; color: #e53e3e; border-bottom: 1px solid #fed7d7; }
+        .diff-header.modified { background: #fffbeb; color: #d69e2e; border-bottom: 1px solid #fbd38d; }
+        .diff-header.same { background: #f7fafc; color: #718096; border-bottom: 1px solid #e2e8f0; }
+
+        .diff-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .diff-table th {
+            background: #f7fafc;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #4a5568;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .diff-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.875rem;
+            vertical-align: top;
+        }
+
+        .diff-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .section-cell {
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .value-cell {
+            font-family: 'Monaco', 'Menlo', monospace;
+            word-break: break-all;
+            max-width: 300px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #718096;
+            font-style: italic;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .value-cell {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Ampare</h1>
+        <p>Compare analytics events and identify differences</p>
+    </div>
+
+    <div class="input-section">
+        <div class="input-grid">
+            <div class="input-group">
+                <label for="event1">Event 1 Data</label>
+                <textarea id="event1" placeholder="Paste first event data here..."></textarea>
+            </div>
+            <div class="input-group">
+                <label for="event2">Event 2 Data</label>
+                <textarea id="event2" placeholder="Paste second event data here..."></textarea>
+            </div>
+        </div>
+        <button id="compareBtn" class="compare-btn">Compare Events</button>
+    </div>
+
+    <div id="resultsSection" class="hidden">
+        <div id="statsContainer" class="stats"></div>
+
+        <div id="modifiedSection" class="diff-section hidden">
+            <div class="diff-header modified">Modified Properties</div>
+            <table class="diff-table">
+                <thead>
+                <tr>
+                    <th width="25%">Property</th>
+                    <th width="37.5%">Event 1 Value</th>
+                    <th width="37.5%">Event 2 Value</th>
+                </tr>
+                </thead>
+                <tbody id="modifiedTableBody"></tbody>
+            </table>
+        </div>
+
+        <div id="addedSection" class="diff-section hidden">
+            <div class="diff-header added">Added Properties</div>
+            <table class="diff-table">
+                <thead>
+                <tr>
+                    <th width="25%">Property</th>
+                    <th width="75%">Value</th>
+                </tr>
+                </thead>
+                <tbody id="addedTableBody"></tbody>
+            </table>
+        </div>
+
+        <div id="removedSection" class="diff-section hidden">
+            <div class="diff-header removed">Removed Properties</div>
+            <table class="diff-table">
+                <thead>
+                <tr>
+                    <th width="25%">Property</th>
+                    <th width="75%">Value</th>
+                </tr>
+                </thead>
+                <tbody id="removedTableBody"></tbody>
+            </table>
+        </div>
+
+
+
+        <div id="sameSection" class="diff-section hidden">
+            <div class="diff-header same">Unchanged Properties</div>
+            <table class="diff-table">
+                <thead>
+                <tr>
+                    <th width="25%">Property</th>
+                    <th width="75%">Value</th>
+                </tr>
+                </thead>
+                <tbody id="sameTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="ampare.js"></script>
+</body>
+</html>
