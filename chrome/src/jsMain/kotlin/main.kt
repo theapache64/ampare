@@ -39,8 +39,18 @@ fun main() {
                             clipboardButton.onclick = {
 
                                 // Check if 'See all events' button is clicked or not (data-testid="modal button")
-                                val modalButton =
+                                var modalButton =
                                     eventDetails.querySelector("button[data-testid='modal button']") as HTMLButtonElement?
+                                if (modalButton == null) {
+                                    modalButton =
+                                        eventDetails.querySelector("button[data-testid='button']") as HTMLButtonElement?
+                                    if (modalButton != null && modalButton.attributes["aria-labelledby"]?.value?.startsWith(
+                                            "_see all other "
+                                        ) == false
+                                    ) {
+                                        modalButton = null
+                                    }
+                                }
                                 var delay = 0
                                 if (modalButton?.textContent?.trim()?.startsWith("See all other ") == true) {
                                     // Click modal button
