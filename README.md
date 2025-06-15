@@ -6,7 +6,7 @@
 <img alt="Twitter: theapache64" src="https://img.shields.io/twitter/follow/theapache64.svg?style=social" />
 </a>
 
-A web-based analytics event comparison tool that helps identify differences between two event data sets. Perfect for debugging analytics implementations and validating event changes.
+A web tool to compare two analytics event data sets and identify differences. Useful for debugging implementations and validating changes.
 
 🔗 **Live Tool**: [a64.in/ampare](https://a64.in/ampare)
 
