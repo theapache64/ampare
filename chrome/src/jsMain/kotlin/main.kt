@@ -17,7 +17,7 @@ fun main() {
                     for (index in 0 until addedNodesCount) {
                         val eventDetails = mutation.addedNodes[index]
                         if (eventDetails is org.w3c.dom.Element && eventDetails.attributes["data-testid"]?.value == "timeline-event-details") {
-
+                            println("QuickTag: :main: Event details div found")
                             // Create a button
                             val clipboardButton = document.createElement("button") as HTMLButtonElement
                             clipboardButton.textContent = "📋 Copy to Clipboard"
@@ -37,11 +37,13 @@ fun main() {
                             }
 
                             clipboardButton.onclick = {
+                                println("QuickTag: :main: Copy to Clipboard button clicked")
 
                                 // Check if 'See all events' button is clicked or not (data-testid="modal button")
                                 var modalButton =
                                     eventDetails.querySelector("button[data-testid='modal button']") as HTMLButtonElement?
                                 if (modalButton == null) {
+                                    println("QuickTag: :main: No modal button found, checking for other button")
                                     modalButton =
                                         eventDetails.querySelector("button[data-testid='button']") as HTMLButtonElement?
                                     if (modalButton != null && modalButton.attributes["aria-labelledby"]?.value?.startsWith(
@@ -51,6 +53,7 @@ fun main() {
                                         modalButton = null
                                     }
                                 }
+                                println("QuickTag: :main: Modal button found")
                                 var delay = 0
                                 if (modalButton?.textContent?.trim()?.startsWith("See all other ") == true) {
                                     // Click modal button
@@ -65,6 +68,7 @@ fun main() {
                                 }, 2000)
 
                                 window.setTimeout({
+                                    println("QuickTag: :main: Copying to clipboard...")
                                     // Copy data to clipboard
                                     val textContent = eventDetails.innerHTML
                                     val textArea = document.createElement("textarea") as HTMLTextAreaElement
@@ -73,6 +77,7 @@ fun main() {
                                     textArea.select();
                                     document.execCommand("copy");
                                     document.body?.removeChild(textArea);
+                                    println("QuickTag: :main: Copied to clipboard successfully!")
                                 }, delay)
                             }
                             // Append the button to the event details div
