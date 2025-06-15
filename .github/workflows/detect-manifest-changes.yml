@@ -5,7 +5,7 @@ name: Detect Manifest Version Changes
 on:
   push:
     branches:
-      - main  # Adjust this to your default branch if different
+      - master  # Adjust this to your default branch if different
     paths:
       - 'chrome/src/jsMain/resources/manifest.json'  # Only trigger on manifest.json changes
 
