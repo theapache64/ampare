@@ -65,6 +65,27 @@ contributions you make are **greatly appreciated**.
 
 Please make sure to update tests as appropriate.
 
+## 🚀 Chrome Extension Publishing
+
+This project uses GitHub Actions to automatically publish the Chrome extension to the Chrome Web Store when a new version tag is pushed.
+
+### Required Secrets
+
+To enable automatic publishing, you need to set up the following secrets in your GitHub repository:
+
+- `EXTENSION_ID`: Your Chrome extension ID from the Chrome Web Store
+- `CLIENT_ID`: Google API client ID with access to the Chrome Web Store API
+- `CLIENT_SECRET`: Google API client secret
+- `REFRESH_TOKEN`: OAuth refresh token for authentication
+
+### Publishing Process
+
+1. Update the version in `chrome/src/jsMain/resources/manifest.json`
+2. Commit your changes
+3. Tag the commit with a version tag (e.g., `v1.0.2`)
+4. Push the tag to GitHub
+5. The GitHub Actions workflow will automatically build and publish the extension
+
 ## ❤ Show your support
 
 Give a ⭐️ if this project helped you!
