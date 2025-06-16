@@ -245,6 +245,20 @@ private fun transformIfHtml(textContent: String): String {
                 return@let textContent // Return original content if no divs found
             }
 
+            // Event name
+            val eventName = try {
+                tempDiv.querySelector("div.shrsectionjubs-w37")?.let { firstSection ->
+                    firstSection.children[firstSection.childElementCount - 2]?.textContent ?: ""
+                }
+            }catch (e : IndexOutOfBoundsException){
+                println("QuickTag: :transformIfHtml: failed to get event name, returning empty string: ${e.message}")
+                null
+            }
+
+            if(eventName!=null){
+                keyValues.add("Event Name\n$eventName\n")
+            }
+
             for (i in 0 until length) {
                 val propertyRowDiv = shrPropertiesDivs[i] as HTMLDivElement
                 // Should only contain 2 divs: key and value
